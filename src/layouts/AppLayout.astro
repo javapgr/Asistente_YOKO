@@ -1,0 +1,63 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Brand from '@/components/ui/Brand.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Button from '@/components/ui/Button.astro';
+
+interface Props {
+  title?: string;
+  guide?: boolean;
+}
+
+const { title, guide = false } = Astro.props;
+const nav = [
+  ['sun', 'Hoy', '/'],
+  ['queue-list', 'Prioridades', '/#priorities'],
+  ['calendar-days', 'Agenda', '/#agenda'],
+  ['arrow-path', 'Mis hábitos', '/#habits'],
+];
+const areas = ['Trabajo', 'Gimnasio', 'Alimentación', 'Sueño', 'Finanzas', 'Tiempo libre'];
+---
+<BaseLayout title={title}>
+  <div class="app-shell isolate" id="app-root">
+    <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+      <div class="sidebar-brand">
+        <Brand />
+        <Button class="mobile-only" variant="ghost" icon="x-mark" aria-label="Cerrar navegación" data-nav-close />
+      </div>
+      <p class="sidebar-caption">Tu espacio personal</p>
+      <nav>
+        <ul role="list" class="nav-list">
+          {nav.map(([icon, label, href], i) => (
+            <li>
+              <a href={href} class:list={['nav-link', { active: i === 0 && !guide }]} aria-current={i === 0 && !guide ? 'page' : undefined}>
+                <Icon name={icon} />{label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="area-heading">Las áreas de tu vida</div>
+      <ul role="list" class="area-list">
+        {areas.map((area, i) => <li><a href={`/#area-${i}`}><span class={`area-dot area-${i}`}></span>{area}</a></li>)}
+      </ul>
+      <div class="sidebar-bottom">
+        <div class="sidebar-note"><Icon name="sparkles" /><p>Un poco de orden.<br />Más espacio para ti.</p></div>
+        <a href="/design" class:list={['nav-link', { active: guide }]} aria-current={guide ? 'page' : undefined}><Icon name="swatch" />Guía de diseño<Icon name="arrow-up-right" /></a>
+        <div class="profile"><div class="avatar">TÚ</div><div><p>Tu espacio</p><p class="muted">Prototipo personal</p></div></div>
+      </div>
+    </aside>
+    <button class="nav-backdrop" type="button" aria-label="Cerrar navegación" data-nav-close hidden></button>
+    <div class="workspace">
+      <header class="topbar">
+        <div class="topbar-left"><Button class="mobile-only" variant="ghost" icon="bars-3" aria-label="Abrir navegación" aria-expanded="false" aria-controls="sidebar" data-nav-toggle /><p>Mi espacio <span class="breadcrumb-slash">/</span> <span class="text-ink">{guide ? 'Guía de diseño' : 'Hoy'}</span></p></div>
+        <div class="topbar-right"><span class="demo-label">Vista de ejemplo</span><div class="topbar-date tabular-nums" data-short-date>25 oct, 2026</div></div>
+      </header>
+      <main id="main" class:list={['page-content', { 'guide-content': guide }]}><slot /></main>
+      <footer class="app-footer"><p>Norte · Tu día, con intención.</p><p>Un paso a la vez también es avanzar.</p></footer>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <slot name="dialogs" />
+  <script src="@/lib/interactions.ts"></script>
+</BaseLayout>

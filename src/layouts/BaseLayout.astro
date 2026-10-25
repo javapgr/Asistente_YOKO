@@ -1,0 +1,26 @@
+---
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Norte - Tu día, con intención' } = Astro.props;
+---
+<!doctype html>
+<html lang="es" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content="Un espacio tranquilo para organizar tu día, cuidar tus hábitos y avanzar con intención." />
+    <meta name="theme-color" content="#244D40" />
+    <link rel="icon" type="image/svg+xml" href="/brand/norte-symbol.svg" />
+    <link rel="preconnect" href="https://rsms.me" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  </head>
+  <body class="min-h-dvh bg-canvas text-ink font-sans">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <slot />
+  </body>
+</html>
