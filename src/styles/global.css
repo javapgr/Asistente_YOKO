@@ -182,6 +182,22 @@
 .select-options li { display: flex; justify-content: space-between; padding: .625rem; cursor: pointer; border-radius: .25rem; list-style: none; }.select-options li:hover,.select-options li[aria-selected=true] { background: var(--color-pine-light); }
 .form-actions { display: flex; justify-content: flex-end; gap: .75rem; padding-top: .75rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.guide-content { max-width: 82rem; }
+.guide-hero { padding: 3rem 0; border-bottom: 1px solid #26352f1a; }
+.guide-hero h1 { font-family: var(--font-display); font-size: clamp(3rem,5vw,5rem); letter-spacing: -.15rem; margin: 1rem 0; }
+.guide-hero p { max-width: 60ch; }
+.guide-section { padding: 2.5rem 0; border-bottom: 1px solid #26352f1a; }
+.guide-section > h2 { font-size: 1.25rem; margin-bottom: 1.5rem; }
+.guide-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.logo-board { min-height: 12rem; display: grid; place-items: center; border-radius: .75rem; border: 1px solid #26352f1a; }
+.logo-board img { width: 14rem; max-width: 80%; }.logo-board.dark { background: var(--color-pine); border-color: transparent; }.logo-board.dark img { filter: brightness(0) invert(1); }
+.guide-caption { color: var(--color-muted); font-size: .75rem; margin-top: .75rem; }
+.palette { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: .75rem; }.swatch { height: 6rem; border-radius: .5rem; border: 1px solid #26352f14; }
+.palette h3 { margin-top: .75rem; font-size: .8125rem; }.palette p { font-family: monospace; font-size: .75rem; color: var(--color-muted); margin-top: .25rem; }
+.bg-pine { background: var(--color-pine); }.bg-canvas { background: var(--color-canvas); }.bg-ink { background: var(--color-ink); }.bg-pine-light { background: var(--color-pine-light); }.bg-bronze { background: var(--color-bronze); }
+.type-specimen { padding: 1.5rem 0; }.type-display { font-family: var(--font-display); font-size: 3rem; letter-spacing: -.08rem; }
+.guide-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }.token-list { display: grid; gap: 1rem; padding: 0; }.token-list dt { font-weight: 500; }.token-list dd { color: var(--color-muted); line-height: 1.7; margin-top: .375rem; }
+.guide-link { color: var(--color-pine); text-decoration: underline; text-underline-offset: .25rem; }.guide-logo-links { display: flex; flex-wrap: wrap; gap: 1rem; padding-top: 1rem; }
 
 @media (max-width: 1200px) {
   .sidebar { width: 13.5rem; }
@@ -216,6 +232,8 @@
   .agenda-time { font-size: .875rem; width: 3rem; }.agenda-event h3 { font-size: 1rem; }.agenda-event p { font-size: .875rem; }
   .free-time { padding-left: 0; font-size: .875rem; }.assistant-panel h2 { font-size: 1.875rem; }
   .app-footer { padding: 1rem 1.25rem; flex-direction: column; gap: .5rem; }
+  .guide-hero { padding: 1.5rem 0 2rem; }.guide-split { grid-template-columns: 1fr; }.palette { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .guide-caption, .palette h3, .palette p { font-size: .875rem; }.type-display { font-size: 2.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
