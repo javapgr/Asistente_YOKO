@@ -1,0 +1,11 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+<a href="/" aria-label="Norte, inicio" class="brand">
+  <img src="/brand/norte-symbol.svg" alt="" width="38" height="38" />
+  {!compact && <span>norte</span>}
+</a>

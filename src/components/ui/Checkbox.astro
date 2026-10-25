@@ -1,0 +1,16 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  id: string;
+  checked?: boolean;
+  label: string;
+  kind?: string;
+}
+
+const { id, checked = false, label, kind = 'task' } = Astro.props;
+---
+<span class="check-control">
+  <input type="checkbox" id={id} name={id} checked={checked} aria-label={label} data-check={kind} />
+  <Icon name="check" />
+</span>

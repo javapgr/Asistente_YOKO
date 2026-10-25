@@ -1,0 +1,22 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  description?: string;
+}
+
+const { id, title, description } = Astro.props;
+---
+<div id={id} class="modal-layer" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby={`${id}-title`} tabindex="-1">
+    <div class="section-heading">
+      <h2 id={`${id}-title`}>{title}</h2>
+      <Button variant="ghost" icon="x-mark" aria-label="Cerrar" data-close-modal />
+    </div>
+    {description && <p class="muted modal-description">{description}</p>}
+    <slot />
+  </section>
+</div>
