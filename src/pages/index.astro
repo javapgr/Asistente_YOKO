@@ -1,11 +1,145 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import AppLayout from '@/layouts/AppLayout.astro';
+import Icon from '@/components/ui/Icon.astro';
 import Button from '@/components/ui/Button.astro';
+import Checkbox from '@/components/ui/Checkbox.astro';
+import Modal from '@/components/ui/Modal.astro';
+
+const tasks = [
+  { id: 'proposal', title: 'Dar forma a la propuesta del proyecto', area: 'Trabajo', meta: '45 min de concentración', tag: 'Lo importante', primary: true },
+  { id: 'training', title: 'Preparar la rutina de la semana', area: 'Gimnasio', meta: '20 min · a tu ritmo', tag: 'Personal', primary: false },
+  { id: 'budget', title: 'Revisar los gastos de esta semana', area: 'Finanzas', meta: '15 min · sin pendientes', tag: 'Personal', primary: false },
+];
+const agenda = [
+  { time: '09:00', end: '09:45', title: 'Un espacio para concentrarte', note: 'Propuesta del proyecto', area: 'Trabajo', class: 'work' },
+  { time: '11:00', end: '11:20', title: 'Poner la semana en orden', note: 'Compras y comidas de la semana', area: 'Alimentación', class: 'food' },
+  { time: '17:00', end: '17:45', title: 'Mover el cuerpo, despejar la mente', note: 'Sesión de gimnasio', area: 'Gimnasio', class: 'gym' },
+];
+const habits = [
+  ['water', 'Un vaso de agua al empezar', 'Alimentación', 'Al despertar'],
+  ['walk', 'Salir a caminar', 'Tiempo libre', '15 minutos para ti'],
+  ['sleep', 'Desconectar antes de dormir', 'Sueño', 'Una noche más tranquila'],
+];
+const areas = ['Trabajo', 'Gimnasio', 'Alimentación', 'Sueño', 'Finanzas', 'Tiempo libre'];
 ---
-<BaseLayout title="Prueba de componentes de Norte">
-  <main id="main" class="p-8">
-    <h1 class="font-display text-4xl">Mi primer componente</h1>
-    <p class="my-4">Astro y Tailwind ya trabajan juntos.</p>
-    <Button variant="primary" icon="plus">Botón de prueba</Button>
-  </main>
-</BaseLayout>
+<AppLayout>
+  <section class="page-heading">
+    <div>
+      <p class="eyebrow" data-full-date>Domingo, 25 de octubre</p>
+      <h1>Haz espacio para<br class="mobile-only" /> un buen día.</h1>
+      <p class="muted heading-description">No hace falta hacerlo todo. Empieza por lo que importa.</p>
+    </div>
+    <Button variant="primary" icon="plus" data-open-modal="new-task">Añadir pendiente</Button>
+  </section>
+
+  <div class="dashboard-grid">
+    <div class="main-column">
+      <section class="intention-panel" aria-labelledby="intention-title">
+        <div class="intention-copy">
+          <p class="eyebrow">Tu intención de hoy</p>
+          <h2 id="intention-title">Menos prisa.<br /><em>Más dirección.</em></h2>
+          <p id="mode-description">Tres prioridades y espacio para respirar.<br />Un plan que se adapta a la vida real.</p>
+          <div class="mode-selector" role="group" aria-label="Ritmo del día">
+            <button type="button" data-mode="normal" aria-pressed="true">Día normal</button>
+            <button type="button" data-mode="busy" aria-pressed="false">Día ocupado</button>
+            <button type="button" data-mode="minimum" aria-pressed="false">Lo esencial</button>
+          </div>
+        </div>
+        <div class="compass-art" aria-hidden="true">
+          <div class="orbit orbit-outer"></div><div class="orbit orbit-inner"></div>
+          <span class="compass-n">N</span><div class="compass-needle"></div><span class="compass-center"></span>
+          <span class="compass-s">S</span><span class="compass-w">O</span><span class="compass-e">E</span>
+        </div>
+      </section>
+
+      <section id="priorities" class="priorities-section" aria-labelledby="priorities-title">
+        <div class="section-heading">
+          <div class="section-title"><h2 id="priorities-title">Lo que importa hoy</h2><span class="count-badge tabular-nums" id="task-count">0 de 3</span></div>
+          <p class="section-aside">Un paso a la vez</p>
+        </div>
+        <ul role="list" class="task-list" id="task-list">
+          {tasks.map((task, index) => (
+            <li class:list={['task-row', { 'task-featured': task.primary }]} data-task-row>
+              <div class="task-check-wrap"><Checkbox id={task.id} label={`Completar: ${task.title}`} /></div>
+              <div class="task-copy">
+                <label for={task.id}>{task.title}</label>
+                <div class="task-meta"><span class={`area-dot area-${index === 0 ? 0 : index === 1 ? 1 : 4}`}></span><span>{task.area}</span><span class="meta-dot">·</span><span>{task.meta}</span></div>
+              </div>
+              <span class:list={['task-tag', { 'tag-important': task.primary }]}>{task.tag}</span>
+            </li>
+          ))}
+        </ul>
+        <button type="button" class="add-inline" data-open-modal="new-task"><Icon name="plus" />Capturar algo que tienes en mente</button>
+      </section>
+
+      <section id="agenda" class="agenda-section" aria-labelledby="agenda-title">
+        <div class="section-heading"><h2 id="agenda-title">Un día con espacio</h2><span class="section-aside">Agenda de ejemplo</span></div>
+        <ol role="list" class="agenda-list">
+          {agenda.map((item) => (
+            <li class="agenda-row">
+              <div class="agenda-time tabular-nums"><p>{item.time}</p><p>{item.end}</p></div>
+              <div class={`agenda-event ${item.class}`}><div><h3>{item.title}</h3><p>{item.note}</p></div><span class="task-tag">{item.area}</span></div>
+            </li>
+          ))}
+        </ol>
+        <div class="free-time"><Icon name="sun" /><p>El resto también cuenta. Deja sitio para lo inesperado.</p></div>
+      </section>
+    </div>
+
+    <div class="right-column">
+      <section id="assistant" class="assistant-panel" aria-labelledby="assistant-title">
+        <div class="assistant-heading"><img src="/brand/norte-symbol.svg" alt="" width="32" height="32" /><span class="quiet-badge">A tu ritmo</span></div>
+        <h2 id="assistant-title">Un poco de claridad,<br />cuando la necesites.</h2>
+        <p class="muted">Saca los pendientes de tu cabeza. Empieza por uno y dale un lugar.</p>
+        <form id="capture-form" class="capture-form">
+          <label class="sr-only" for="capture-input">¿Qué tienes en mente?</label>
+          <textarea id="capture-input" name="thought" rows="3" maxlength="180" placeholder="¿Qué tienes en mente?" required></textarea>
+          <div class="capture-actions"><Button variant="ghost" icon="microphone" aria-label="Información sobre la función de voz" data-open-modal="voice-info" /><button type="submit" class="send-button" aria-label="Guardar como pendiente"><Icon name="arrow-up" /></button></div>
+        </form>
+        <div class="suggestion-row"><button type="button" data-quick="minimum">Hoy necesito ir más despacio<Icon name="arrow-up-right" /></button></div>
+        <p class="prototype-note">Captura local · IA y voz aún sin conectar.</p>
+      </section>
+
+      <section id="habits" class="habits-section" aria-labelledby="habits-title">
+        <div class="section-heading"><h2 id="habits-title">Pequeños rituales</h2><span id="habit-count" class="section-aside tabular-nums">0 / 3</span></div>
+        <ul role="list" class="habit-list">
+          {habits.map(([id, title, area, subtitle]) => (
+            <li class="habit-row"><div class="habit-copy"><label for={id}>{title}</label><p>{subtitle}</p><span class="sr-only">{area}</span></div><Checkbox id={id} label={`Completar hábito: ${title}`} kind="habit" /></li>
+          ))}
+        </ul>
+        <p class="habit-note">La constancia también incluye volver a empezar.</p>
+      </section>
+
+      <section class="balance-section" aria-labelledby="balance-title">
+        <div class="section-heading"><h2 id="balance-title">Tu vida, en equilibrio</h2></div>
+        <p class="muted">Todas tus áreas tienen un lugar.</p>
+        <div class="area-grid">{areas.map((area, i) => <div id={`area-${i}`} class="area-chip"><span class={`area-dot area-${i}`}></span>{area}</div>)}</div>
+        <p class="prototype-note">El seguimiento semanal llegará más adelante.</p>
+      </section>
+    </div>
+  </div>
+
+  <Fragment slot="dialogs">
+    <Modal id="new-task" title="Un pendiente menos en tu cabeza" description="Dale un nombre claro. El siguiente paso puede ser pequeño.">
+      <form id="task-form" class="task-form">
+        <div class="field"><label for="task-title">¿Qué quieres hacer?</label><input id="task-title" name="title" type="text" maxlength="180" required placeholder="Por ejemplo, preparar la lista de compras" /></div>
+        <div class="field">
+          <label id="area-label">Área de tu vida</label>
+          <div class="custom-select" data-select>
+            <button type="button" class="select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="area-label area-value"><span id="area-value">Trabajo</span><Icon name="chevron-up-down" /></button>
+            <input type="hidden" name="area" value="Trabajo" />
+            <ul role="listbox" aria-labelledby="area-label" class="select-options" hidden>
+              {areas.map((area, i) => <li role="option" tabindex="-1" aria-selected={i === 0 ? 'true' : 'false'} data-value={area}>{area}<span aria-hidden="true" class={`area-dot area-${i}`}></span></li>)}
+            </ul>
+          </div>
+        </div>
+        <p class="muted form-note">Se guardará en este navegador. Puedes marcarlo cuando lo completes.</p>
+        <div class="form-actions"><Button data-close-modal>Cancelar</Button><Button type="submit" variant="primary" icon="plus">Guardar pendiente</Button></div>
+      </form>
+    </Modal>
+    <Modal id="voice-info" title="Tu voz tendrá su espacio" description="La conversación por voz se conectará a Cloudflare y Claude en la siguiente etapa. Este prototipo no graba ni envía audio.">
+      <p class="muted">Por ahora puedes escribir tus pendientes y guardarlos desde aquí.</p>
+      <div class="form-actions"><Button variant="primary" data-close-modal>Entendido</Button></div>
+    </Modal>
+  </Fragment>
+</AppLayout>
